@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
     QMainWindow, QMenu, QMenuBar, QPushButton,
     QSizePolicy, QStatusBar, QTableWidget, QTableWidgetItem,
     QWidget)
+import os
 from singleton import singleton
 from predict import ImageDetector
 from PIL import Image, ImageDraw
@@ -30,23 +31,27 @@ class Ui_MainWindow(object):
     label_img_path:str
 
     def on_compute_button_down(self):
-        return
         from BottleMaps.bottleMaps import bottleMaps, TiltedWasteData
         imageDetector:ImageDetector = ImageDetector()
         results = imageDetector.predict(self.label_img_path)
 
         qimage = self.label.pixmap().toImage()
+        qimage.save(os.path.join(os.getcwd(), "tmp\\qimage.png"))
 
-
+        pil_img_path = os.path.join(os.getcwd(), "tmp\\qimage.png")
+        pil_image = Image.open(pil_img_path)
         draw = ImageDraw.Draw(pil_image)
 
         for res in results:
             bottleMaps.add_waste(TiltedWasteData(res.x, res.y, res.type))
-            draw.rectangle((res.x, res.y, res.width, res.height), fill=None, outline='red')
+            draw.rectangle((res.x - (res.width * 0.5), res.y - (res.height * 0.5), res.x + (res.width * 0.5), res.y + (res.height * 0.5)), fill=None, outline='red')
         
         bottleMaps.save_map()
 
-        self.label.setPixmap(qimage)
+        data = pil_image.tobytes("raw", "RGBA")
+        qimage = QImage(data, pil_image.width, pil_image.height, QImage.Format_RGBA8888)
+        qpixmap = QPixmap.fromImage(qimage)
+        self.label.setPixmap(qpixmap)
 
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
