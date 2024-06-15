@@ -24,12 +24,9 @@ from singleton import singleton
 
 @singleton
 class Ui_MainWindow(object):
-    
-    @staticmethod
-    def instance():
-        return _instance
 
     def setupUi(self, MainWindow):
+
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1113, 727)
@@ -50,6 +47,13 @@ class Ui_MainWindow(object):
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 480, 151, 31))
+
+        def callable():
+            from BottleMaps.bottleMaps import bottleMaps
+            bottleMaps.save_map()
+
+        self.pushButton.clicked.connect(callable)
+
         self.comboBox = QComboBox(self.centralwidget)
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -92,4 +96,4 @@ class Ui_MainWindow(object):
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
     # retranslateUi
 
-_instance = Ui_MainWindow()
+ui_MainWindow = Ui_MainWindow()
