@@ -2,7 +2,6 @@ from roboflow import Roboflow
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
-
 class ImageDetector:
     def __init__(self):
         rf = Roboflow(api_key="uMUVjvL3wu5Jz1Y3sq4J")
