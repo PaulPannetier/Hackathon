@@ -1,6 +1,11 @@
 {
     "wastes": [
         {
+            "x": 302.0,
+            "y": 395.5,
+            "type": "bottle"
+        },
+        {
             "x": 190,
             "y": 420,
             "type": "WasteType.ball"

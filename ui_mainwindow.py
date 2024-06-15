@@ -21,12 +21,20 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
     QSizePolicy, QStatusBar, QTableWidget, QTableWidgetItem,
     QWidget)
 from singleton import singleton
+from predict import ImageDetector
 
 @singleton
 class Ui_MainWindow(object):
+    label_img_path:str
 
     def on_compute_button_down(self):
-        from BottleMaps.bottleMaps import bottleMaps
+        from BottleMaps.bottleMaps import bottleMaps, TiltedWasteData
+        imageDetector:ImageDetector = ImageDetector()
+        results = imageDetector.predict(self.label_img_path)
+
+        for res in results:
+            bottleMaps.add_waste(TiltedWasteData(res.x, res.y, res.type))
+
         bottleMaps.save_map()
 
     def setupUi(self, MainWindow):
@@ -38,7 +46,8 @@ class Ui_MainWindow(object):
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(10, 10, 541, 461))
-        self.label.setPixmap(QPixmap(u"Autonomous-Garbage-Collector-Boat-1/test/IMG_20230205_072752_633_jpg.rf.9eec6a91d70294c63714582993c2c73a.jpg"))
+        self.label_img_path = u"VOCImgs-5/train/000001_jpg.rf.5bbdf1f628372225da1aa684234f6b4d.jpg"
+        self.label.setPixmap(QPixmap(self.label_img_path))
         self.label.setScaledContents(True)
         self.tableWidget = QTableWidget(self.centralwidget)
         self.tableWidget.setObjectName(u"tableWidget")
@@ -74,10 +83,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
-
         self.comboBox.setCurrentIndex(0)
-
-
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
