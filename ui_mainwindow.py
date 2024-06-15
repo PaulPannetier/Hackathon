@@ -20,10 +20,54 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
     QMainWindow, QMenu, QMenuBar, QPushButton,
     QSizePolicy, QStatusBar, QTableWidget, QTableWidgetItem,
     QWidget)
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
+from PyQt5 import QtGui
+import cv2
 from singleton import singleton
+import numpy as np
+
+class VideoThread(QThread):
+    change_pixmap_signal = pyqtSignal(np.ndarray)
+
+    def run(self):
+        # capture from web cam
+        cap = cv2.VideoCapture(0)
+        while True:
+            ret, cv_img = cap.read()
+            if ret:
+                self.change_pixmap_signal.emit(cv_img)
 
 @singleton
 class Ui_MainWindow(object):
+
+    def activated(self, index):
+            print(index)
+            if index == 0:
+                self.label_2.resize(self.label_2.size())
+                # create the video capture thread
+                self.thread = VideoThread()
+                # connect its signal to the update_image slot
+                self.thread.change_pixmap_signal.connect(self.update_image)
+                # start the thread
+                self.thread.start()
+
+    @pyqtSlot(np.ndarray)
+    def update_image(self, cv_img):
+        """Updates the image_label with a new opencv image"""
+        qt_img = self.convert_cv_qt(cv_img)
+        self.label_2.setPixmap(qt_img)
+    
+    def convert_cv_qt(self, cv_img):
+        """Convert from an opencv image to QPixmap"""
+        rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb_image.shape
+        bytes_per_line = ch * w
+        convert_to_Qt_format = QtGui.QImage(rgb_image.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
+        p = convert_to_Qt_format.scaled(self.disply_width, self.display_height, Qt.KeepAspectRatio)
+        return QPixmap.fromImage(p)
+
+
+
 
     def setupUi(self, MainWindow):
 
@@ -55,8 +99,10 @@ class Ui_MainWindow(object):
         self.pushButton.clicked.connect(callable)
 
         self.comboBox = QComboBox(self.centralwidget)
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+        self.comboBox.addItem("Camera") # index 0
+        self.comboBox.addItem("Image") # index 1
+        self.comboBox.activated.connect(self.activated)
+
         self.comboBox.setObjectName(u"comboBox")
         self.comboBox.setGeometry(QRect(30, 530, 151, 31))
         self.comboBox.setMaxVisibleItems(2)
