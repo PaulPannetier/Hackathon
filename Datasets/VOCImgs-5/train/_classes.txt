@@ -1,0 +1,8 @@
+ball
+bottle
+branch
+grass
+leaf
+milk-box
+plastic-bag
+plastic-garbage
