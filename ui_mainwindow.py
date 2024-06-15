@@ -20,8 +20,15 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
     QMainWindow, QMenu, QMenuBar, QPushButton,
     QSizePolicy, QStatusBar, QTableWidget, QTableWidgetItem,
     QWidget)
+from singleton import singleton
 
+@singleton
 class Ui_MainWindow(object):
+    
+    @staticmethod
+    def instance():
+        return _instance
+
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -85,3 +92,4 @@ class Ui_MainWindow(object):
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
     # retranslateUi
 
+_instance = Ui_MainWindow()
