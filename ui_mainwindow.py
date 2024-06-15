@@ -22,6 +22,11 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
     QWidget)
 
 class Ui_MainWindow(object):
+
+    def on_compute_button_down():
+        from BottleMaps.bottleMaps import bottleMaps
+        bottleMaps.save_map()
+
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -44,6 +49,8 @@ class Ui_MainWindow(object):
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 480, 151, 31))
+        self.pushButton.clicked.connect(self.on_compute_button_down)
+
         self.comboBox = QComboBox(self.centralwidget)
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -62,7 +69,6 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
 
