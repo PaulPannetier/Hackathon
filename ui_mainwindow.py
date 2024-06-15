@@ -16,9 +16,10 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
-    QMenu, QMenuBar, QSizePolicy, QStatusBar,
-    QTableWidget, QTableWidgetItem, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QSizePolicy, QStatusBar, QTableWidget, QTableWidgetItem,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -34,10 +35,20 @@ class Ui_MainWindow(object):
         self.label.setScaledContents(True)
         self.tableWidget = QTableWidget(self.centralwidget)
         self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setGeometry(QRect(10, 480, 541, 192))
+        self.tableWidget.setGeometry(QRect(210, 480, 341, 192))
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(576, 12, 511, 651))
+        self.label_2.setGeometry(QRect(580, 10, 511, 661))
+        self.label_2.setPixmap(QPixmap(u"BottleMaps/maps.jpg"))
+        self.pushButton = QPushButton(self.centralwidget)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setGeometry(QRect(30, 480, 151, 31))
+        self.comboBox = QComboBox(self.centralwidget)
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.setObjectName(u"comboBox")
+        self.comboBox.setGeometry(QRect(30, 530, 151, 31))
+        self.comboBox.setMaxVisibleItems(2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -56,13 +67,20 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
+        self.comboBox.setCurrentIndex(0)
+
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label.setText("")
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Carte", None))
+        self.label_2.setText("")
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Compute", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Camera", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Image", None))
+
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
     # retranslateUi
