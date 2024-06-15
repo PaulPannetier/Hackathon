@@ -54,7 +54,6 @@ class BottleMapsData:
 
 @singleton
 class BottleMaps:
-
     data:BottleMapsData
 
     def __init__(self):
@@ -70,7 +69,6 @@ class BottleMaps:
 
     def save_map(self):
 
-        self.add_waste(TiltedWasteData(190, 420, WasteType.ball))
         json_string = self.data.json()
         file_name = os.path.join(os.getcwd(), "BottleMaps\\TiltedWasteData.json")
 
@@ -83,11 +81,11 @@ class BottleMaps:
         for tiltedWasteData in self.data.wastes:
             x = tiltedWasteData.x
             y = tiltedWasteData.y
-            draw.ellipse((x - 2, y - 2, x + 2, y + 2), fill='red', outline='red')
+            radius = 3
+            draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill='red', outline='red')
 
         image.save(os.path.join(os.getcwd(), "BottleMaps\\maps.png"))
 
         ui_MainWindow.label_2.setPixmap(QPixmap(u"BottleMaps/maps.png"))
-
 
 bottleMaps = BottleMaps()

@@ -22,20 +22,31 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
     QWidget)
 from singleton import singleton
 from predict import ImageDetector
+from PIL import Image, ImageDraw
+
 
 @singleton
 class Ui_MainWindow(object):
     label_img_path:str
 
     def on_compute_button_down(self):
+        return
         from BottleMaps.bottleMaps import bottleMaps, TiltedWasteData
         imageDetector:ImageDetector = ImageDetector()
         results = imageDetector.predict(self.label_img_path)
 
+        qimage = self.label.pixmap().toImage()
+
+
+        draw = ImageDraw.Draw(pil_image)
+
         for res in results:
             bottleMaps.add_waste(TiltedWasteData(res.x, res.y, res.type))
-
+            draw.rectangle((res.x, res.y, res.width, res.height), fill=None, outline='red')
+        
         bottleMaps.save_map()
+
+        self.label.setPixmap(qimage)
 
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -57,6 +68,8 @@ class Ui_MainWindow(object):
         self.label_2.setGeometry(QRect(570, 10, 531, 591))
         self.label_2.setPixmap(QPixmap(u"BottleMaps/maps.png"))
         self.label_2.setScaledContents(True)
+        from BottleMaps.bottleMaps import bottleMaps
+        bottleMaps.save_map()
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 480, 151, 31))
