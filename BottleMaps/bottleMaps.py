@@ -24,7 +24,7 @@ class BottleMaps:
 
     def save_map(self):
 
-        self.add_waste(TiltedWasteData(Coordinate(0, 0), WasteType.ball))
+        self.add_waste(TiltedWasteData(Coordinate(190, 420), WasteType.ball))
         json_string = self.data.json()
         file_name = "BottleMaps\\TiltedWasteData.json"
 
