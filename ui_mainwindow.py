@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         draw = ImageDraw.Draw(pil_image)
 
         for res in results:
-            bottleMaps.add_waste(TiltedWasteData(res.x, res.y, res.type))
+            bottleMaps.add_waste(TiltedWasteData.create(res.x, res.y, res.type))
             draw.rectangle((res.x - (res.width * 0.5), res.y - (res.height * 0.5), res.x + (res.width * 0.5), res.y + (res.height * 0.5)), fill=None, outline='red')
         
         bottleMaps.save_map()
