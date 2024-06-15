@@ -46,17 +46,20 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>570</x>
       <y>10</y>
-      <width>511</width>
-      <height>661</height>
+      <width>531</width>
+      <height>591</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>BottleMaps/maps.jpg</pixmap>
+     <pixmap>BottleMaps/maps.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">

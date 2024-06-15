@@ -66,9 +66,6 @@ class Ui_MainWindow(object):
         p = convert_to_Qt_format.scaled(self.disply_width, self.display_height, Qt.KeepAspectRatio)
         return QPixmap.fromImage(p)
 
-
-
-
     def setupUi(self, MainWindow):
 
         if not MainWindow.objectName():
@@ -92,11 +89,11 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 480, 151, 31))
 
-        def callable():
+        def on_compute_button_down():
             from BottleMaps.bottleMaps import bottleMaps
             bottleMaps.save_map()
 
-        self.pushButton.clicked.connect(callable)
+        self.pushButton.clicked.connect(on_compute_button_down)
 
         self.comboBox = QComboBox(self.centralwidget)
         self.comboBox.addItem("Camera") # index 0
