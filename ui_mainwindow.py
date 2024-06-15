@@ -16,58 +16,12 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QSizePolicy, QStatusBar, QTableWidget, QTableWidgetItem,
-    QWidget)
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
-from PyQt5 import QtGui
-import cv2
-from singleton import singleton
-import numpy as np
+from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QMainWindow,
+    QMenu, QMenuBar, QSizePolicy, QStatusBar,
+    QTableWidget, QTableWidgetItem, QWidget)
 
-class VideoThread(QThread):
-    change_pixmap_signal = pyqtSignal(np.ndarray)
-
-    def run(self):
-        # capture from web cam
-        cap = cv2.VideoCapture(0)
-        while True:
-            ret, cv_img = cap.read()
-            if ret:
-                self.change_pixmap_signal.emit(cv_img)
-
-@singleton
 class Ui_MainWindow(object):
-
-    def activated(self, index):
-            print(index)
-            if index == 0:
-                self.label_2.resize(self.label_2.size())
-                # create the video capture thread
-                self.thread = VideoThread()
-                # connect its signal to the update_image slot
-                self.thread.change_pixmap_signal.connect(self.update_image)
-                # start the thread
-                self.thread.start()
-
-    @pyqtSlot(np.ndarray)
-    def update_image(self, cv_img):
-        """Updates the image_label with a new opencv image"""
-        qt_img = self.convert_cv_qt(cv_img)
-        self.label_2.setPixmap(qt_img)
-    
-    def convert_cv_qt(self, cv_img):
-        """Convert from an opencv image to QPixmap"""
-        rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
-        h, w, ch = rgb_image.shape
-        bytes_per_line = ch * w
-        convert_to_Qt_format = QtGui.QImage(rgb_image.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
-        p = convert_to_Qt_format.scaled(self.disply_width, self.display_height, Qt.KeepAspectRatio)
-        return QPixmap.fromImage(p)
-
     def setupUi(self, MainWindow):
-
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1113, 727)
@@ -80,29 +34,12 @@ class Ui_MainWindow(object):
         self.label.setScaledContents(True)
         self.tableWidget = QTableWidget(self.centralwidget)
         self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setGeometry(QRect(210, 480, 341, 192))
+        self.tableWidget.setGeometry(QRect(10, 480, 541, 192))
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(580, 10, 511, 661))
-        self.label_2.setPixmap(QPixmap(u"BottleMaps/maps.jpg"))
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(30, 480, 151, 31))
-
-        def on_compute_button_down():
-            from BottleMaps.bottleMaps import bottleMaps
-            bottleMaps.save_map()
-
-        self.pushButton.clicked.connect(on_compute_button_down)
-
-        self.comboBox = QComboBox(self.centralwidget)
-        self.comboBox.addItem("Camera") # index 0
-        self.comboBox.addItem("Image") # index 1
-        self.comboBox.activated.connect(self.activated)
-
-        self.comboBox.setObjectName(u"comboBox")
-        self.comboBox.setGeometry(QRect(30, 530, 151, 31))
-        self.comboBox.setMaxVisibleItems(2)
+        self.label_2.setGeometry(QRect(570, 10, 531, 591))
+        self.label_2.setPixmap(QPixmap(u"BottleMaps/maps.png"))
+        self.label_2.setScaledContents(True)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -121,9 +58,6 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.comboBox.setCurrentIndex(0)
-
-
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
@@ -131,12 +65,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label.setText("")
         self.label_2.setText("")
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Compute", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Camera", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Image", None))
-
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
     # retranslateUi
 
-ui_MainWindow = Ui_MainWindow()
