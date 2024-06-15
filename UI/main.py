@@ -9,7 +9,6 @@ import numpy as np
 from math import *
 import time
 from Classes import *
-from votes import *
 """Pour fonctionner correcterment ils est nécessaire d'avoir les fichiers votes.py Classes.py et les répertoirs styles/files/pictures dans le même répertoire que ce main.py"""
 
 class Menu(QMainWindow):
