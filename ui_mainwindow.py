@@ -20,10 +20,12 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QHeaderView, QLabel,
     QMainWindow, QMenu, QMenuBar, QPushButton,
     QSizePolicy, QStatusBar, QTableWidget, QTableWidgetItem,
     QWidget)
+from singleton import singleton
 
+@singleton
 class Ui_MainWindow(object):
 
-    def on_compute_button_down():
+    def on_compute_button_down(self):
         from BottleMaps.bottleMaps import bottleMaps
         bottleMaps.save_map()
 
@@ -50,7 +52,6 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(30, 480, 151, 31))
         self.pushButton.clicked.connect(self.on_compute_button_down)
-
         self.comboBox = QComboBox(self.centralwidget)
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -92,3 +93,4 @@ class Ui_MainWindow(object):
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
     # retranslateUi
 
+ui_MainWindow = Ui_MainWindow()

@@ -1,0 +1,9 @@
+{
+    "wastes": [
+        {
+            "x": 190,
+            "y": 420,
+            "type": "WasteType.ball"
+        }
+    ]
+}
