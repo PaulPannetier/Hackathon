@@ -1,0 +1,1 @@
+Project de détection de déchets dans les rivières avec des vidéos filmer par des caméra à l'avant des bateaux. Les vidéos sont ensuite traitées et données en analyse en utilisant des modèles de machine learning.
